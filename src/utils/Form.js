@@ -98,7 +98,7 @@ class Form {
                     resolve(response.data);
                 })
                 .catch(error => {
-                    this.onFail(error.response.data);
+                    this.onFail(error.response.data.errors);
 
                     reject(error.response.data);
                 });
@@ -124,8 +124,7 @@ class Form {
      * @param {object} errors
      */
     onFail(errors) {
-        console.log(errors);
-        this.errors.record(errors.errors);
+        this.errors.record(errors);
     }
 }
 

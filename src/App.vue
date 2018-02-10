@@ -4,7 +4,7 @@
   <toolbar></toolbar>
   <v-content>
     <v-container fluid fill-height>
-      <v-layout justify-center align-center>
+      <v-layout justify-center align-center row wrap>
         <router-view></router-view>
       </v-layout>
     </v-container>

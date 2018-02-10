@@ -19,6 +19,11 @@ window.Vue = Vue;
 window.axios = axios;
 
 /*
+Configuraciones de axios
+*/
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+/*
 Uso en objeto global para compartir datos entre diferentes 
 instancias de Vue que puedan necesitar compartir los datos
 */

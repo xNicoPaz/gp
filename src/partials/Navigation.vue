@@ -25,7 +25,6 @@
 					</v-list-tile-content>
 				</v-list-tile>				
 			</router-link>
-			<router-link to="/">Ir al home</router-link>
 		</v-list>
 	</v-navigation-drawer>
 </template>

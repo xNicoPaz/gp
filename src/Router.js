@@ -14,6 +14,10 @@ let routes = [
 		path: '/members/create',
 		component: require('./views/members/Create.vue').default,
 	},
+	{
+		path: '/members/:id',
+		component: require('./views/members/Details.vue').default,
+	}
 ];
 
 export default new VueRouter({

@@ -2,46 +2,59 @@
 	<v-flex xs-12 fill-height>
 		<h3 class="headline">Consultar miembros registrados en el GP</h3>
 		<breadcrumbs :items="breadcrumbItems"></breadcrumbs>
-		<v-data-table class="elevation-1" :headers="headers" :items="members" hide-actions>
-			<template slot="items" slot-scope="props">
-				<tr @click="props.expanded = !props.expanded">
-					<td>{{ props.item.first_name }}</td>
-					<td class="text-xs-right">{{ props.item.last_name }}</td>
-					<td class="text-xs-right">{{ props.item.age }}</td>
-					<td class="text-xs-right">{{ props.item.sex === 1 ? 'Hombre' : 'Mujer' }}</td>						
-				</tr>
-			</template>
-			<template slot="expand" slot-scope="props">
-				<div class="text-xs-center">
-					<v-btn color="green white--text" @click="goToDetails(props.item.id)">
-						detalles
-						<v-icon right>fa-search</v-icon>
-					</v-btn>
-					<v-btn color="yellow white--text" @click="goToEdit(props.item.id)">
-						editar
-						<v-icon right>fa-edit</v-icon>
-					</v-btn>
-					<v-btn color="red white--text" @click="delete(props.item.id)">
-						eliminar
-						<v-icon right>fa-trash</v-icon>
-					</v-btn>									
-				</div>
-			</template>
-			<template slot="no-data">
-				<h3 class="body-2">No hay miembros registrados</h3>
-			</template>
-		</v-data-table>
+
+		<v-card>
+		    <v-card-title>
+		      Nutrition
+		      <v-spacer></v-spacer>
+		      <v-text-field
+		        append-icon="search"
+		        label="Buscar"
+		        single-line
+		        hide-details
+		        v-model="search"
+		      ></v-text-field>
+		    </v-card-title>
+			<v-data-table class="elevation-1" :headers="headers" :items="members" :search="search" :loading="isLoading" hide-actions>
+			    <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+				<template slot="items" slot-scope="props">
+					<tr @click="props.expanded = !props.expanded">
+						<td>{{ props.item.first_name }}</td>
+						<td class="text-xs-right">{{ props.item.last_name }}</td>
+						<td class="text-xs-right">{{ props.item.age }}</td>
+						<td class="text-xs-right">{{ props.item.sex === 1 ? 'Hombre' : 'Mujer' }}</td>						
+					</tr>
+				</template>
+				<template slot="expand" slot-scope="props">
+					<div class="text-xs-center">
+						<details-button :path="window.Url.detailsPath(props.item.id)"></details-button>
+						<edit-button :path="window.Url.editPath(props.item.id)"></edit-button>
+						<delete-button :path="window.Url.deletePath(props.item.id)"></delete-button>	
+					</div>
+				</template>
+				<template slot="no-data">
+					<h3 class="body-2">No hay miembros registrados</h3>
+				</template>
+			</v-data-table>
+				
+		</v-card>
 	</v-flex>
 </template>
 
 <script>
 import Breadcrumbs from '../../partials/Breadcrumbs';
+import DetailsButton from '../../partials/DetailsButton';
+import EditButton from '../../partials/EditButton';
+import DeleteButton from '../../partials/DeleteButton';
 
 export default{
 	name: 'members-index',
-	components: { Breadcrumbs },
+	components: { Breadcrumbs, DetailsButton, EditButton, DeleteButton },
 	data(){
 		return{
+			window: window,
+			isLoading: true,
+			search: '',
 			breadcrumbItems: [
 				{
 					text: 'Miembros',
@@ -76,21 +89,12 @@ export default{
 			members: [],
 		};
 	},
-	methods: {
-		goToDetails(userId){
-			this.$router.push({path: '/members/' + userId });
-		},
-		goToEdit(userId){
-			//To do
-		},
-		delete(userId){
-			//To do
-		}
-	},
 	created(){
-		window.axios.get('http://api.gp.local/members').then((response) => {
+		window.axios.get(window.Url.apiBaseUrl() + '/members').then((response) => {
 			this.members = response.data;
+			this.isLoading = false;
 		});
+		window.indexVue = this;
 	}
 }
 </script>

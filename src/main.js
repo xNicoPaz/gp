@@ -4,6 +4,7 @@ import Vuetify from 'vuetify';
 import VueRouter from 'vue-router';
 import axios from 'axios';
 import eventBus from './EventBus';
+import Url from './utils/Url';
 
 /*
 Uso Vuetify para usar sus components tipo Material Design
@@ -17,6 +18,11 @@ Vue y Axios van a ser globales por cualquier cosa
 */
 window.Vue = Vue;
 window.axios = axios;
+
+/*
+Clase tipo biblioteca para acumular funciones utiles
+*/
+window.Url = Url;
 
 /*
 Configuraciones de axios
